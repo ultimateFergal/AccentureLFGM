@@ -1,0 +1,31 @@
+<section class="signup-form">
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input type="text" 
+        matInput 
+        placeholder="Su número de identificación" 
+        autocomplete="off"
+        formControlName="id"
+        (keyup)="searchId(clienteForm.get('id').value)">
+        <mat-error *ngFor="let validation of account_validation_messages.id">
+          <mat-error class="error-message" *ngIf="clienteForm.get('id').hasError(validation.type) && (clienteForm.get('id').dirty || clienteForm.get('id').touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" 
+        matInput 
+        placeholder="Sus nombres y apellidos" 
+        autocomplete="off"
+        formControlName="fullName">
+        <mat-error *ngFor="let validation of account_validation_messages.fullName">
+          <mat-error class="error-message" *ngIf="clienteForm.get('fullName').hasError(validation.type) && (clienteForm.get('fullName').dirty || clienteForm.get('fullName').touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <button type="submit" mat-raised-button color="primary" [disabled]="!isValid()">Submit</button>
+    </form>
+  </section>
+  <!-- <section id="container">
+    <div id="child1" class="child"></div>
+    <div id="child2" class="child"></div>
+    <div id="child3" class="child"></div>
+  </section> -->
