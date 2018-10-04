@@ -13,12 +13,12 @@
           matInput 
           placeholder="Su número de identificación" 
           autocomplete="off"
-          formControlName="id"
-          (keyup)="searchId(solicitudForm.get('id').value)"
-          (blur)="searchId(solicitudForm.get('id').value)"
-          (click)="searchId(solicitudForm.get('id').value)">
-          <mat-error *ngFor="let validation of solicitud_validation_messages.id">
-            <mat-error class="error-message" *ngIf="solicitudForm.get('id').hasError(validation.type) && (solicitudForm.get('id').dirty || solicitudForm.get('id').touched)">{{validation.message}}</mat-error>
+          formControlName="idCliente"
+          (keyup)="searchId(solicitudForm.get('idCliente').value)"
+          (blur)="searchId(solicitudForm.get('idCliente').value)"
+          (click)="searchId(solicitudForm.get('idCliente').value)">
+          <mat-error *ngFor="let validation of solicitud_validation_messages.idCliente">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('idCliente').hasError(validation.type) && (solicitudForm.get('idCliente').dirty || solicitudForm.get('idCliente').touched)">{{validation.message}}</mat-error>
           </mat-error>
         </mat-form-field>
         <mat-form-field>

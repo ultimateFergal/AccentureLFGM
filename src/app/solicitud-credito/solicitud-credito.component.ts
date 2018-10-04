@@ -8,8 +8,10 @@ import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from './dialog.component';
 
-import { ICliente } from '../models/cliente';
 import { SalaryValidator } from './salary.validator';
+
+import { ICliente } from '../models/cliente';
+import { ICredito } from '../models/credito';
 
 
 @Component({
@@ -26,8 +28,17 @@ export class SolicitudCreditoComponent implements OnInit {
   maxDate: Date = new Date();
   valiId: boolean = false;
 
+  credito: ICredito = {    
+    idCliente: "",
+    companyName: "",
+    companyNIT: "",
+    salary: 0,
+    approvedAmount: 0,
+    startDate: null
+  };
+
   solicitud_validation_messages = {
-    'id': [
+    'idCliente': [
       { type: 'required', message: 'Número de identificación requerido' },
       { type: 'pattern', message: 'Sólo puede ingresar números' },
     ],
@@ -66,7 +77,7 @@ export class SolicitudCreditoComponent implements OnInit {
     });
 
     this.solicitudForm = new FormGroup({
-      id: new FormControl(this.paramId, { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
+      idCliente: new FormControl(this.paramId, { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
       companyName: new FormControl('', { validators: [Validators.required] }),
       companyNIT: new FormControl('', { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
       salary: new FormControl('', { validators: [Validators.required, SalaryValidator.validSalary, Validators.pattern(/^[0-9]*$/)] }),
@@ -139,8 +150,31 @@ export class SolicitudCreditoComponent implements OnInit {
     let currDate: Date = new Date();
     let selectedDate: Date = new Date(this.solicitudForm.get('startDate').value);
 
-    if (this.date_diff_indays(selectedDate, currDate) >= 548){
-      if (this.solicitudForm.get('salary').value > 800000){
+    if (this.date_diff_indays(selectedDate, currDate) >= 548) {
+      if (this.solicitudForm.get('salary').value > 800000) {
+
+        if (this.solicitudForm.get('salary').value > 800000 && this.solicitudForm.get('salary').value < 1000000) {
+          this.credito.approvedAmount = 5000000;
+        } else if (this.solicitudForm.get('salary').value >= 1000001 && this.solicitudForm.get('salary').value < 4000000) {
+          this.credito.approvedAmount = 20000000;
+        } else if (this.solicitudForm.get('salary').value >= 4000000) {
+          this.credito.approvedAmount = 50000000;
+        }
+
+        this.credito.idCliente = this.solicitudForm.get('idCliente').value;
+        this.credito.companyName = this.solicitudForm.get('companyName').value;
+        this.credito.companyNIT = this.solicitudForm.get('companyNIT').value;
+        this.credito.salary = this.solicitudForm.get('salary').value;
+        this.credito.startDate = this.solicitudForm.get('startDate').value;
+
+        let res = this.clientesService.createCredito({ ...this.credito });
+        res.then(r => {
+          if (r.key != null && r.key != "") {
+            this.snackBar.open(`Usuario de ID ${this.credito.idCliente} registrado satisfactoriamente!!!!`, '', {
+              duration: 2000,
+            });
+          }
+        });
 
       } else {
         this.snackBar.open(`Debe tener un salario mayor a $800.000 para poder ser aprobado!!!`, '', {

@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
 import { ICliente } from '../models/cliente';
+import { ICredito } from '../models/credito';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ import { ICliente } from '../models/cliente';
 export class ClientesService {
 
   clientesList: AngularFireList<any>;
+  creditosList: AngularFireList<any>;
   selectedCliente: ICliente;
   selectedClienteed: any;
 
@@ -25,6 +27,10 @@ export class ClientesService {
 
   getClientes() {
     return this.clientesList = this.firebaseDB.list('clientes');
+  }
+
+  getCreditos() {
+    return this.creditosList = this.firebaseDB.list('creditos');
   }
 
   getCliente(key: any): any {
@@ -44,7 +50,22 @@ export class ClientesService {
       name: cliente.fullName,
       dateOfBirth: cliente.dateOfBirth.toDateString(),
       id: cliente.id
-    }).then( hi => {return hi});
+    }).then(resp => { return resp });
+  }
+
+  createCredito(credito: ICredito) {
+    if (!this.creditosList) {
+      this.creditosList = this.getCreditos();
+    }
+
+    return this.creditosList.push({
+      idCliente: credito.idCliente,
+      companyName: credito.companyName,
+      companyNIT: credito.companyNIT,
+      salary: credito.salary,
+      aprovedAmount: credito.approvedAmount,
+      startDate: credito.startDate.toDateString(),
+    }).then(resp => { return resp });
   }
 
   updateCliente(cliente: ICliente) {
@@ -63,7 +84,7 @@ export class ClientesService {
     this.clientesList.remove($key);
   }
 
- 
+
 
   private extractData(response: Response) {
     //let body = response.json();
