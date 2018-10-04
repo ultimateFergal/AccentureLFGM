@@ -40,12 +40,11 @@ export class ClientesService {
       this.clientesList = this.getClientes();
     }
 
-    this.clientesList.push({
-      name: cliente.name,
+    return this.clientesList.push({
+      name: cliente.fullName,
       dateOfBirth: cliente.dateOfBirth.toDateString(),
-      id: cliente.id,
-      tipoId: cliente.tipoId
-    });
+      id: cliente.id
+    }).then( hi => {return hi});
   }
 
   updateCliente(cliente: ICliente) {
@@ -54,10 +53,9 @@ export class ClientesService {
     }
 
     this.clientesList.update(cliente.$key, {
-      name: cliente.name,
+      name: cliente.fullName,
       dateOfBirth: cliente.dateOfBirth,
-      id: cliente.id,
-      tipoId: cliente.tipoId
+      id: cliente.id
     });
   }
 

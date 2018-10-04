@@ -1,0 +1,70 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Solictud y aprobación de créditos</span>
+      <span class="example-spacer"></span>
+      <i class="material-icons">money</i>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <section class="signup-form">
+      <mat-card>
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="solicitudForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <input type="text" 
+          matInput 
+          placeholder="Su número de identificación" 
+          autocomplete="off"
+          formControlName="id"
+          (keyup)="searchId(solicitudForm.get('id').value)"
+          (blur)="searchId(solicitudForm.get('id').value)">
+          <mat-error *ngFor="let validation of solicitud_validation_messages.id">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('id').hasError(validation.type) && (solicitudForm.get('id').dirty || solicitudForm.get('id').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" 
+          matInput 
+          placeholder="Nombre de su empresa" 
+          autocomplete="off"
+          formControlName="companyName">
+          <mat-error *ngFor="let validation of solicitud_validation_messages.companyName">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('companyName').hasError(validation.type) && (solicitudForm.get('companyName').dirty || solicitudForm.get('companyName').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" 
+          matInput 
+          placeholder="NIT de la empresa" 
+          autocomplete="off"
+          formControlName="companyNIT">
+          <mat-error *ngFor="let validation of solicitud_validation_messages.companyNIT">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('companyNIT').hasError(validation.type) && (solicitudForm.get('companyNIT').dirty || solicitudForm.get('companyNIT').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" 
+          matInput 
+          placeholder="Salario actual" 
+          autocomplete="off"
+          formControlName="salary">
+          <mat-error *ngFor="let validation of solicitud_validation_messages.salary">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('salary').hasError(validation.type) && (solicitudForm.get('salary').dirty || solicitudForm.get('salary').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input 
+            matInput 
+            placeholder="Su fecha de ingreso a la empresa"
+            formControlName="startDate" 
+            [matDatepicker]="picker"
+            [max]="maxDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngFor="let validation of solicitud_validation_messages.startDate">
+            <mat-error class="error-message" *ngIf="solicitudForm.get('startDate').hasError(validation.type) && (solicitudForm.get('startDate').dirty || solicitudForm.get('startDate').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field> 
+        <button type="submit" mat-raised-button color="primary" [disabled]="!isValid()">Submit</button>
+        <button *ngIf="credito" [routerLink]="['/solicitud', solicitudForm.get('id').value]" mat-raised-button color="accent">Solicitar un crédito</button>
+      </form>
+    </mat-card>
+    </section>

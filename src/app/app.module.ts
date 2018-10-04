@@ -16,13 +16,20 @@ import { RegistroClienteComponent } from './registro-cliente/registro-cliente.co
 // Firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+import { ClientesService } from './services/clientes.service';
+
 import { environment } from '../environments/environment';
-import { IdValidator } from './registro-cliente/id.validator';
+import { SalaryValidator } from './solicitud-credito/salary.validator';
+import { SolicitudCreditoComponent } from './solicitud-credito/solicitud-credito.component';
+import { DialogComponent } from './solicitud-credito/dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistroClienteComponent
+    RegistroClienteComponent,
+    SolicitudCreditoComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +44,8 @@ import { IdValidator } from './registro-cliente/id.validator';
     HttpModule,
     MatTooltipModule
   ],
-  providers: [IdValidator],
-  bootstrap: [AppComponent]
+  providers: [SalaryValidator, ClientesService],
+  bootstrap: [AppComponent],
+  entryComponents: [DialogComponent]
 })
 export class AppModule { }

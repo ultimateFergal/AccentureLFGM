@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ClientesService } from '../services/clientes.service';
-import { MatSlideToggleModule } from '@angular/material';
 
-import { IdValidator } from './id.validator';
 import { MatSnackBar } from '@angular/material';
 
 import { ICliente } from '../models/cliente';
@@ -17,11 +15,18 @@ import { ICliente } from '../models/cliente';
 export class RegistroClienteComponent implements OnInit {
 
   clienteForm: FormGroup;
+  clientesList: ICliente[];
+  credito: boolean = false;
+  valiId: boolean;
   maxDate;
   maxDateHD;
-  valiId;
+  cliente: ICliente = {
+    id: "",
+    fullName: "",
+    dateOfBirth: null
+  };
 
-  account_validation_messages = {
+  cliente_validation_messages = {
     'id': [
       { type: 'required', message: 'Número de identificación requerido' },
       { type: 'pattern', message: 'Sólo puede ingresar números' },
@@ -30,11 +35,22 @@ export class RegistroClienteComponent implements OnInit {
     'fullName': [
       { type: 'required', message: 'Nombres y apellidos requeridos' },
       { type: 'pattern', message: 'Caracter inválido' },
+    ],
+    'dateOfBirth': [
+      { type: 'required', message: 'Fecha de nacimiento requerida' },
     ]
   }
-  constructor(private clientesService: ClientesService, public snackBar: MatSnackBar) { }
+
+  constructor(private clientesService: ClientesService,
+    private router: Router,
+    private route: ActivatedRoute,
+    public snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
+
+    this.getClientes();
+
     this.maxDate = new Date();
     this.maxDateHD = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
@@ -43,31 +59,60 @@ export class RegistroClienteComponent implements OnInit {
     this.clienteForm = new FormGroup({
       id: new FormControl('', { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
       fullName: new FormControl('', { validators: [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)] }),
-      //DoB: new FormControl('', { validators: [Validators.required] }),
+      dateOfBirth: new FormControl('', { validators: [Validators.required] }),
     });
   }
 
-  searchId(id: any) {
-    console.log(id);
-    this.clientesService.getCliente(id).subscribe(
-      result => {
-        if (result != null) {
-          this.snackBar.open('Usuario exise');
-          this.valiId = false;
-        } else {
-          this.snackBar.open('Usuario disponible');
-          this.valiId = true;
-        }
-      }
-    );
 
+  getClientes() {
+    this.clientesService.getClientes()
+      .snapshotChanges()
+      .subscribe(item => {
+        this.clientesList = []
+        item.forEach(element => {
+          let x = element.payload.toJSON();
+          x["$key"] = element.key;
+          this.clientesList.push(x as ICliente);
+        })
+      })
+  }
+
+  searchId(id: string) {
+
+    let listClientes = this.clientesList.filter((cliente: ICliente) => (cliente.id == id));
+
+    if (listClientes.length > 0) {
+      this.snackBar.open(`El usuario de ID ${id} ya existe!!!`, '', {
+        duration: 1000,
+      });
+      this.valiId = false;
+    } else {
+      // this.snackBar.open('Usuario disponible');
+      this.valiId = true;
+    }
   }
 
   isValid() {
-    if (this.clienteForm.valid && this.valiId) 
+    if (this.clienteForm.valid && this.valiId)
       return true
     else
       return false;
+  }
+
+  onSubmit() {
+    this.cliente.id = this.clienteForm.get('id').value;
+    this.cliente.fullName = this.clienteForm.get('fullName').value;
+    this.cliente.dateOfBirth = this.clienteForm.get('dateOfBirth').value;
+
+    let res = this.clientesService.createCliente({ ...this.cliente });
+    res.then(r => {
+      if (r.key != null && r.key != "") {
+        this.snackBar.open(`Usuario de ID ${this.cliente.id} registrado satisfactoriamente!!!!`, '', {
+          duration: 2000,
+        });
+        this.credito = true;
+      }
+    });
   }
 
 }
