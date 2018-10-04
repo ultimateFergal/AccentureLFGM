@@ -6,6 +6,7 @@ import { SolicitudCreditoComponent } from './solicitud-credito/solicitud-credito
 const routes: Routes = [
     { path: '', component: RegistroClienteComponent },
     { path: 'registro', component: RegistroClienteComponent },
+    { path: 'solicitud/', component: SolicitudCreditoComponent },
     { path: 'solicitud/:id', component: SolicitudCreditoComponent },
 /*     { path: 'userlist', component: EmployeesComponent},
     { path: 'edituser/:id/:id2', component: EmployeeEditComponent },  

@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>Solictud y aprobación de créditos</span>
+      <span>Solicitud y aprobación de créditos</span>
       <span class="example-spacer"></span>
       <i class="material-icons">money</i>
     </mat-toolbar-row>
@@ -15,7 +15,8 @@
           autocomplete="off"
           formControlName="id"
           (keyup)="searchId(solicitudForm.get('id').value)"
-          (blur)="searchId(solicitudForm.get('id').value)">
+          (blur)="searchId(solicitudForm.get('id').value)"
+          (click)="searchId(solicitudForm.get('id').value)">
           <mat-error *ngFor="let validation of solicitud_validation_messages.id">
             <mat-error class="error-message" *ngIf="solicitudForm.get('id').hasError(validation.type) && (solicitudForm.get('id').dirty || solicitudForm.get('id').touched)">{{validation.message}}</mat-error>
           </mat-error>
@@ -64,7 +65,6 @@
           </mat-error>
         </mat-form-field> 
         <button type="submit" mat-raised-button color="primary" [disabled]="!isValid()">Submit</button>
-        <button *ngIf="credito" [routerLink]="['/solicitud', solicitudForm.get('id').value]" mat-raised-button color="accent">Solicitar un crédito</button>
       </form>
     </mat-card>
     </section>

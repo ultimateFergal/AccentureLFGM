@@ -69,7 +69,7 @@ export class SolicitudCreditoComponent implements OnInit {
       id: new FormControl(this.paramId, { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
       companyName: new FormControl('', { validators: [Validators.required] }),
       companyNIT: new FormControl('', { validators: [Validators.required, Validators.pattern(/^[0-9]*$/)] }),
-      salary: new FormControl('', { validators: [Validators.required, SalaryValidator.validSalary,  Validators.pattern(/^[0-9]*$/)] }),
+      salary: new FormControl('', { validators: [Validators.required, SalaryValidator.validSalary, Validators.pattern(/^[0-9]*$/)] }),
       startDate: new FormControl('', { validators: [Validators.required] }),
     });
 
@@ -108,7 +108,7 @@ export class SolicitudCreditoComponent implements OnInit {
         if (listClientes.length < 1) {
           this.dialogPopUp()
         } else {
-          
+
         }
 
       })
@@ -134,4 +134,29 @@ export class SolicitudCreditoComponent implements OnInit {
     }
   }
 
+  onSubmit() {
+
+    let currDate: Date = new Date();
+    let selectedDate: Date = new Date(this.solicitudForm.get('startDate').value);
+
+    if (this.date_diff_indays(selectedDate, currDate) >= 548){
+      if (this.solicitudForm.get('salary').value > 800000){
+
+      } else {
+        this.snackBar.open(`Debe tener un salario mayor a $800.000 para poder ser aprobado!!!`, '', {
+          duration: 1000,
+        });
+      }
+    } else {
+      this.snackBar.open(`Debe llevar trabajando para la empresa más de año y medio para poder ser aprobado!!!`, '', {
+        duration: 1000,
+      });
+    }
+  }
+
+  date_diff_indays(date1: Date, date2: Date) {
+    let dt1 = new Date(date1);
+    let dt2 = new Date(date2);
+    return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+  }
 }
