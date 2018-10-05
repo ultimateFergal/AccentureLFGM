@@ -1,49 +1,30 @@
-.example-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .example-container>* {
-    width: 100%;
-  }
-  
-  .mb-20 {
-    margin-bottom: 20px;
-  }
-  
-  .welcome {
-      text-align: center;
-  }
-  
-  /* .signup-form {
+mat-toolbar {
+  margin-top: 10px;
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+}
+
+/* .solicitud-form {
       width: 300px;
   }
-   */
-  
-   mat-form-field {
-      width: 300px;
-  }
-  
-  .example-icon {
-      padding: 0 14px;
-    }
-    
-    .example-spacer {
-      flex: 1 1 auto;
-    }
-  
-    section {
-      padding: 30px;
-    }
-    
-    mat-form-field {
-      padding: 10px;
-    }
-  
-  
+*/
 
-  
+mat-form-field {
+  width: 300px;
+  padding: 10px;
+}
 
-  
-  
-  
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+section {
+  padding: 30px;
+}
+

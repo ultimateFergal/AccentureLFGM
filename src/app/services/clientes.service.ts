@@ -23,7 +23,7 @@ export class ClientesService {
   selectedCliente: ICliente;
   selectedClienteed: any;
 
-  constructor(private firebaseDB: AngularFireDatabase, private http: Http) { }
+  constructor(private firebaseDB: AngularFireDatabase ) { }
 
   getClientes() {
     return this.clientesList = this.firebaseDB.list('clientes');
@@ -47,7 +47,7 @@ export class ClientesService {
     }
 
     return this.clientesList.push({
-      name: cliente.fullName,
+      fullName: cliente.fullName,
       dateOfBirth: cliente.dateOfBirth.toDateString(),
       id: cliente.id
     }).then(resp => { return resp });
@@ -63,40 +63,19 @@ export class ClientesService {
       companyName: credito.companyName,
       companyNIT: credito.companyNIT,
       salary: credito.salary,
-      aprovedAmount: credito.approvedAmount,
+      approvedAmount: credito.approvedAmount,
       startDate: credito.startDate.toDateString(),
     }).then(resp => { return resp });
   }
 
-  updateCliente(cliente: ICliente) {
-    if (!this.clientesList) {
-      this.clientesList = this.getClientes();
-    }
-
-    this.clientesList.update(cliente.$key, {
-      name: cliente.fullName,
-      dateOfBirth: cliente.dateOfBirth,
-      id: cliente.id
-    });
-  }
-
-  deleteCliente($key: string) {
-    this.clientesList.remove($key);
-  }
-
-
-
   private extractData(response: Response) {
     //let body = response.json();
     let body = <any[]>response.json();
-    //console.log(body);
     //return body.data || {};
     return body || {};
   }
 
   private handleError(error: Response): Observable<any> {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }

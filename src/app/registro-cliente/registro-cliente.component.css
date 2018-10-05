@@ -1,27 +1,11 @@
-.example-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.example-container>* {
-  width: 100%;
-}
-
-.mb-20 {
-  margin-bottom: 20px;
-}
-
-.welcome {
-    text-align: center;
-}
-
-/* .signup-form {
+/* .cliente-form {
     width: 300px;
 }
  */
 
  mat-form-field {
     width: 300px;
+    padding: 10px;
 }
 
 .example-icon {
@@ -35,9 +19,11 @@
   section {
     padding: 30px;
   }
-  
-  mat-form-field {
-    padding: 10px;
+
+  mat-toolbar {
+    margin-top: 10px;
   }
 
-
+  mat-card-header {
+    margin-bottom: 20px;
+  }

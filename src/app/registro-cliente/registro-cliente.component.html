@@ -1,12 +1,15 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>Registro de usuarios</span>
-    <span class="example-spacer"></span>
-    <i class="material-icons">person</i>
-  </mat-toolbar-row>
-</mat-toolbar>
-<section class="signup-form">
+
+<section class="cliente-form">
     <mat-card>
+    <mat-card-header>
+      <mat-toolbar color="accent">
+        <mat-toolbar-row>
+          <span>Regístrese como cliente</span>
+          <span class="example-spacer"></span>
+          <i class="material-icons">person</i>
+        </mat-toolbar-row>
+      </mat-toolbar>    
+    </mat-card-header>
     <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <input type="text" 

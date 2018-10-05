@@ -28,7 +28,7 @@ export class SolicitudCreditoComponent implements OnInit {
   maxDate: Date = new Date();
   valiId: boolean = false;
 
-  credito: ICredito = {    
+  credito: ICredito = {
     idCliente: "",
     companyName: "",
     companyNIT: "",
@@ -70,7 +70,7 @@ export class SolicitudCreditoComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.paramId = params.get('id');
       if (this.paramId) {
-        this.getClientes();
+        this.checkParam();
       } else {
         this.paramId = ""
       }
@@ -87,22 +87,27 @@ export class SolicitudCreditoComponent implements OnInit {
     this.maxDate.setDate(this.maxDate.getDay() - 1);
   }
 
-  dialogPopUp() {
+  dialogPopUp(caso: boolean) {
+    
     const dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        dummy: this.dummy
+      data: { 
+        dummy: caso,
+        idCliente: this.solicitudForm.get('idCliente').value,
+        approvedAmount: this.credito.approvedAmount
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.router.navigateByUrl('registro');
-      }
-    });
+    if (!caso) {
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.router.navigateByUrl('registro');
+        }
+      });
+    }
   }
 
 
-  getClientes() {
+  checkParam() {
     this.clientesService.getClientes()
       .snapshotChanges()
       .subscribe(item => {
@@ -117,11 +122,8 @@ export class SolicitudCreditoComponent implements OnInit {
         let listClientes = this.clientesList.filter((cliente: ICliente) => (cliente.id == this.paramId));
 
         if (listClientes.length < 1) {
-          this.dialogPopUp()
-        } else {
-
-        }
-
+          this.dialogPopUp(false);
+        } 
       })
   }
 
@@ -133,16 +135,28 @@ export class SolicitudCreditoComponent implements OnInit {
   }
 
   searchId(id: string) {
-    let listClientes = this.clientesList.filter((cliente: ICliente) => (cliente.id == id));
+    this.clientesService.getClientes()
+      .snapshotChanges()
+      .subscribe(item => {
+        this.clientesList = []
+        item.forEach(element => {
+          let x = element.payload.toJSON();
+          x["$key"] = element.key;
+          this.clientesList.push(x as ICliente);
+        });
 
-    if (listClientes.length < 1) {
-      this.snackBar.open(`El usuario de ID ${id} no ha sido registrado aún!!!`, '', {
-        duration: 1000,
-      });
-      this.valiId = false;
-    } else {
-      this.valiId = true;
-    }
+        let listClientes = this.clientesList.filter((cliente: ICliente) => (cliente.id == id));
+
+        if (listClientes.length < 1) {
+          this.snackBar.open(`El usuario de ID ${id} no ha sido registrado aún!!!`, '', {
+            duration: 1000,
+          });
+          this.valiId = false;
+        } else {
+          this.valiId = true;
+        }
+
+      })
   }
 
   onSubmit() {
@@ -170,9 +184,7 @@ export class SolicitudCreditoComponent implements OnInit {
         let res = this.clientesService.createCredito({ ...this.credito });
         res.then(r => {
           if (r.key != null && r.key != "") {
-            this.snackBar.open(`Usuario de ID ${this.credito.idCliente} registrado satisfactoriamente!!!!`, '', {
-              duration: 2000,
-            });
+            this.dialogPopUp(true);
           }
         });
 

@@ -1,0 +1,57 @@
+<section class="cliente-form">
+  <mat-card>
+    <mat-card-header>
+      <mat-toolbar color="accent">
+        <mat-toolbar-row>
+          <span>Lista Créditos</span>
+          <span class="example-spacer"></span>
+          <i class="material-icons">money</i>
+          <mat-icon class="example-icon">format_list_bulleted</mat-icon>
+        </mat-toolbar-row>
+      </mat-toolbar>
+    </mat-card-header>
+
+    <div fxLayoutAlign="center center">
+      <mat-form-field fxFlex="40%">
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.idCliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="companyName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Compañía</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.companyName }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="companyNIT">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> NIT Compañía </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.companyName }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="salary">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Salario </mat-header-cell>
+        <mat-cell *matCellDef="let element"> ${{ element.salary }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.startDate | date: 'yyyy/MM/dd' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="approvedAmount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad aprobada </mat-header-cell>
+        <mat-cell *matCellDef="let element"> ${{ element.approvedAmount }} </mat-cell>
+      </ng-container>
+
+      <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card>
+</section>

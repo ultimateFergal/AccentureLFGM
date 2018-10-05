@@ -18,18 +18,32 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { ClientesService } from './services/clientes.service';
+import { AuthService } from './services/auth.service';
 
 import { environment } from '../environments/environment';
 import { SalaryValidator } from './solicitud-credito/salary.validator';
 import { SolicitudCreditoComponent } from './solicitud-credito/solicitud-credito.component';
 import { DialogComponent } from './solicitud-credito/dialog.component';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { ListaClientesComponent } from './lista-clientes/lista-clientes.component';
+import { UserAgePipe } from './user-age.pipe';
+import { ListaCreditosComponent } from './lista-creditos/lista-creditos.component';
+import { LoginComponent } from './login/login.component';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistroClienteComponent,
     SolicitudCreditoComponent,
-    DialogComponent
+    DialogComponent,
+    HeaderComponent,
+    SidenavListComponent,
+    ListaClientesComponent,
+    UserAgePipe,
+    ListaCreditosComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -41,10 +55,10 @@ import { DialogComponent } from './solicitud-credito/dialog.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AngularFireAuthModule
   ],
-  providers: [SalaryValidator, ClientesService],
+  providers: [SalaryValidator, ClientesService, AuthService],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
 })

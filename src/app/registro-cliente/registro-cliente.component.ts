@@ -87,7 +87,6 @@ export class RegistroClienteComponent implements OnInit {
       });
       this.valiId = false;
     } else {
-      // this.snackBar.open('Usuario disponible');
       this.valiId = true;
     }
   }

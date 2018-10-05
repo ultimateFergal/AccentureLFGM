@@ -1,0 +1,23 @@
+mat-form-field {
+  width: 300px;
+}
+
+section {
+  padding: 30px;
+}
+
+mat-toolbar {
+  margin-top: 10px;
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-icon {
+  padding: 0 14px;
+}

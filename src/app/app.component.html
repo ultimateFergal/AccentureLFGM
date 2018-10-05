@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+    <!-- <mat-sidenav [opened]="openSidenav"> -->
+    <mat-sidenav #sidenav role="navigation">
+        <p><strong>Accenture LFGM</strong></p>
+        <app-sidenav-list (closeSidenav)="sidenav.close()"></app-sidenav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <!-- <button (click)="openSidenav = true">Show sidenav</button> -->
+        <!-- <button (click)="sidenav.toggle()">Show sidenav</button> -->
+        <!--usar este-->
+        <app-header (sidenavToggle) ="sidenav.toggle()"></app-header>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>
